@@ -5,7 +5,7 @@ import niknak.utils.fs as fs
 
 
 def to_resolution(
-    input_file: str, output_file: str, resolution: Literal["1080", "720", "480s"]
+    input_file: str, output_file: str, resolution: Literal["1080", "720", "480"]
 ):
     try:
         with tempfile.NamedTemporaryFile(
@@ -15,8 +15,8 @@ def to_resolution(
 
             fs.download(input_file, input_tmp_file_path)
 
-            with tempfile.NamedTemporaryFile(suffix=".mp4", delete=False) as tmp_file:
-                output_tmp_file_path = tmp_file.name
+            with tempfile.NamedTemporaryFile(suffix=".mp4", delete=False) as output_tmp_file:
+                output_tmp_file_path = output_tmp_file.name
 
                 stream = ffmpeg.input(input_tmp_file_path)
                 stream = ffmpeg.output(

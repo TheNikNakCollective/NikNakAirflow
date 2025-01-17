@@ -28,16 +28,17 @@ def split_path(file_path: str) -> dict:
 
 
 def read(path: Union[str, Path], mode: str = "r"):
-    uri = f"s3://{str(path).lstrip('/')}"
+    uri = f"s3://{str(path).lstrip('/')}" if not path.startswith("s3://") else path
     """Read a file from an s3 bucket
     """
     return smart_open.open(uri=uri, mode=mode, transport_params=transport_params)
 
 
 def write(path: Union[str, Path], mode: str = "w"):
-    uri = f"s3://{str(path).lstrip('/')}"
+    uri = f"s3://{str(path).lstrip('/')}" if not path.startswith("s3://") else path
     """Write a file an s3 bucket
     """
+
     return smart_open.open(uri=uri, mode=mode, transport_params=transport_params)
 
 

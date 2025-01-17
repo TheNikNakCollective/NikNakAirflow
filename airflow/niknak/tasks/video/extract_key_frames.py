@@ -1,10 +1,9 @@
 from typing import Dict
 from airflow.decorators import task
-from airflow.models.param import Param
 
 
 @task
-def to_resolution(data: Dict, resolution: str):
+def extract_key_frames(data: Dict):
     from niknak.utils.video.video import Video
 
     video_id = data.get("video_id")
@@ -14,4 +13,6 @@ def to_resolution(data: Dict, resolution: str):
 
     video = Video(storage_provider, user_id, video_id, video_path)
 
-    return {f"{resolution}p_file": video.to_resolution(resolution)}
+    frames = video.extract_key_frames()
+
+    return {**data, "frames": frames }

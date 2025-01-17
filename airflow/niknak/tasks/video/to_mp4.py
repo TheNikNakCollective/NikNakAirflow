@@ -7,23 +7,17 @@ from airflow.models.param import Param
 )
 def to_mp4(**context):
     from typing import Dict
-    from niknak.utils.video.to_mp4 import to_mp4
-    import niknak.utils.fs as fs
-    import niknak.env as env
+    from niknak.utils.video.video import Video
 
     params: Dict = context["params"]
     video_id = params.get("video_id")
     user_id = params.get("user_id")
     video_path = params.get("video_path")
-    video_provider = params.get("video_provider")
+    storage_provider = params.get("video_provider")
 
-    input_file = f"{video_provider}://{video_path}"
-    output_file = f"{video_provider}://{env.NIKNAK_RAW_DATA_FOLDER}/user-uploads/videos/{user_id}/{video_id}/converted.mp4"
+    video = Video(storage_provider, user_id, video_id, video_path)
 
     return {
         **params,
-        "converted_file": to_mp4(
-            input_file,
-            output_file,
-        )
+        "converted_file": video.to_mp4()
     }

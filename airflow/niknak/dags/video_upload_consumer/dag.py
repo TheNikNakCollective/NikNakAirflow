@@ -10,6 +10,7 @@ from datetime import datetime
 def video_upload_consumer():
     from niknak.tasks.video.to_mp4 import to_mp4
     from niknak.tasks.video.to_resolution import to_resolution
+    from niknak.tasks.video.extract_key_frames import extract_key_frames
     from airflow.decorators import task
 
     mp4 = to_mp4()
@@ -30,6 +31,8 @@ def video_upload_consumer():
         return merged_data
     
     merged_data = merge_results(mp4, [output_1080p, output_720p, output_480p])
+
+    extract_key_frames(merged_data)
 
 
 dag = video_upload_consumer()
